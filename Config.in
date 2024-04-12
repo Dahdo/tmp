@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MYTESTPACKAGE
+		bool "mytestpackage"
+		help
+			The package to test adding the package to buildroot.
+			Yup! That's it.ss
