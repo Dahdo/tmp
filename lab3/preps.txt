@@ -39,3 +39,7 @@ Resizing the partition and splitting it. Example:
 sudo parted /dev/sda
 resizepart 1 50%
 mkpart primary ext4 51% 100%
+
+
+
+Useful link: https://github.com/Ekatwikz/LinuxForEmbeddedSystems/blob/main/lab3/README.md
