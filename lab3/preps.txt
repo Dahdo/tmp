@@ -1,0 +1,41 @@
+1. Building the administrative linux
+------------------------------------
+- initramfs
+- packages:
+1. parted (for device manipulation and formatting)
+2. e2fsprogs(resize2fs - although parted can handles it, mkfs.ext4) [Found In ‘Target Packages/Filesystem and Flash utilities’]
+3. dosfstools(mkfs.fat and fsck.fat for vfat management)[Found In ‘Target Packages/Filesystem and Flash utilities’]
+4.  wget (File transfer over the network)
+5. Enable util-linux (libblkid, libuuid) -- just to be on a safe side [Found In ‘Target Packages/System Tools’]
+4. Enable bootlaoder (in 3)
+?? Using those tools
+
+2. Building the utility linux
+------------------------------
+- ext4 as roots
+- Network file server: Samba
+?? how to transfer the generated rootfs image to the raspberry - think it will be easy
+After transferring the rootfs image, it will be linked in bootloader to be loaded
+?? how to make use of samba
+
+3. Bootloader configuration
+---------------------------
+- Section "bootloaders" -> Build system=legacy, u-boot board name=rpi_4
+- Section "Host utilities" -> enable "host u-boot tools", enable generate a U-boot boot script and link source
+
+------------------------------------------------------
+Formatting, Partitioning
+------------------------
+Useful commands:
+lsblk - list block devices
+
+Using parted:
+-------------
+https://gcore.com/learning/manage-disk-partitions-linux-parted-command/
+mkpart <partition-type> <file-system-type> <start> <end>
+
+Resizing the partition and splitting it. Example:
+---------------
+sudo parted /dev/sda
+resizepart 1 50%
+mkpart primary ext4 51% 100%

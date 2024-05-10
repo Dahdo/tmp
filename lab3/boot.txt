@@ -1,0 +1,40 @@
+fdt addr ${fdt_addr}
+fdt get value bootargs_orig /chosen bootargs
+mmc dev 0
+
+gpio clear 22 # Green (to be turned on later - utility system)
+gpio set 23 # Yellow (to indicate selection)
+gpio clear 24 # Blue (Reserved - Default Rescue)
+gpio clear 27 # Red (to be turned on later - administrative system)
+
+echo ..................................
+echo Waiting for a sec. SW3 (GPIO 10) to be pressed:
+echo Utility system will be loaded if SW3 not pressed
+echo Press for Adminstrative system
+sleep 1
+
+if gpio input 10 ; then
+    gpio clear 23
+    gpio set 27 # Red LED
+    echo SW3 pressed!
+
+    sleep 1
+    echo Booting the Administrative system!
+    echo ===
+
+    fatload mmc 0:1 ${kernel_addr_r} /user/imageAdmin
+    setenv bootargs "${bootargs_orig} console=ttyAMA0"
+    booti ${kernel_addr_r} - ${fdt_addr}
+else
+    gpio clear 23
+    gpio set 22
+    echo SW3 not pressed!
+
+    sleep 1
+    echo Booting Utility System!
+    echo ===
+
+    fatload mmc 0:1 ${kernel_addr_r} /user/imageUtility
+    setenv bootargs "${bootargs_orig} console=ttyAMA0 root=/dev/mmcblk0p2 rootwait"
+    booti ${kernel_addr_r} - ${fdt_addr}
+fi
