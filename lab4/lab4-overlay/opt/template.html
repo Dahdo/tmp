@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+   <head>
+       
+      <h2>
+        <form method="post">
+          Current song: {{current_song.get('file')}} 
+          <input type="submit" value="<<" name="prev"/> 
+          <input type="submit" value="Play/Pause" name="toggle"/> 
+          <input type="submit" value=">>" name="next"/></form>
+      </h2>
+   </head>
+   <body>
+    <form method="post">
+     <ul>
+       {% for song in songs %}
+         <li style="content: '+'">
+          <input type="submit" class="button" name={{song.get('pos')}} value={{"(" + song.get('pos') + ")" + song.get('file')}}> 
+          <a href={{"/download/" + song.get('file')}}>Download</a> 
+          <a href={{"/delete/" + song.get('file') + song.get('pos')}}>Delete</a>
+        </li>
+       {% end %}
+     </ul>
+     </form>
+    <br>
+        <h2>Upload a file</h2>
+        <form enctype="multipart/form-data" method="post">
+            File: <input type="file" name="filearg" />
+            <br />
+            <input type="submit" value="Upload" name="upload"/>
+        </form>
+   </body>
+</html>

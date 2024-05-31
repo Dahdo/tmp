@@ -1,0 +1,9 @@
+#!/bin/sh
+sleep 10
+
+mpc update
+mpc clear
+mpc add /
+
+(python3 /opt/player.py) &
+(python3 /opt/tornado.py) &
