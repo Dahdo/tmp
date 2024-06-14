@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Image Upload</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            margin: 20px;
+        }
+        .upload-form {
+            margin-bottom: 20px;
+        }
+        .images {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .images img {
+            margin: 5px;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+        .nav-buttons {
+            margin-top: 20px;
+        }
+        .nav-buttons button {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Image Upload</h1>
+    <form class="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file1">
+        <input type="submit" value="Upload">
+    </form>
+
+    {% if current_image %}
+    <div class="current-image">
+        <h2>Viewing: {{ current_image }}</h2>
+        <img src="/static/images/{{ current_image }}" alt="{{ current_image }}" width="300">
+        <div class="nav-buttons">
+            <a href="/image/{{ prev_image }}"><button>Previous</button></a>
+            <a href="/image/{{ next_image }}"><button>Next</button></a>
+        </div>
+        <div class="download-button">
+            <a href="/download/{{ current_image }}"><button>Download</button></a>
+        </div>
+    </div>
+    {% end %}
+
+    <div class="images">
+        {% for image in images %}
+        <a href="/image/{{ image }}">
+            <img src="/static/images/{{ image }}" alt="{{ image }}">
+        </a>
+        {% end %}
+    </div>
+
+    <p>{{ message }}</p>
+</div>
+</body>
+</html>
